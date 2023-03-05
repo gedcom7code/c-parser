@@ -22,7 +22,7 @@ void dumpStructure(GedStructure *s, int level) {
             p += 1;
             char *p2 = strchr(p, '\n');
             if (p2) *p2 = '\0';
-            printf("\n%d CONT %s", level+1, p);
+            printf("\n%d CONT %s%s", level+1, (*p=='@'?"@":""), p);
             p = p2;
         }
     }

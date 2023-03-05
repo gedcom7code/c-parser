@@ -14,3 +14,5 @@ Requiring the entire file to be read into a single array may seem wasteful,
 but this code re-uses almost all of that memory to store tags, ids, and payloads
 resulting in both time and space savings over a streaming parser.
 For applications that handle the data line by line without the need to revisit previous lines, a streaming parser could be more efficient.
+
+A preliminary attempt at a forgiving parser is included behind `#ifdef FORGIVING`{.c} guards. It has only had minimal testing and may drop data without warning.

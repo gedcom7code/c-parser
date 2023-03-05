@@ -52,3 +52,15 @@ void freeGedStructure(GedStructure *g);
  * - if errline is not NULL, sets *errline to the line number of the error
  */
 GedStructure *parseGEDCOM(char *input, const char **errmsg, size_t *errline);
+
+#ifdef FORGIVING
+/**
+ * like parseGEDCOM, by tries to guess what was meant when given malformed data
+ * instead of halting with an error. This may result in it returning data with
+ * illegal characters in tags and IDs and in skipping non-GEDCOM lines.
+ * 
+ * This function is much less well tested than parseGEDCOM and silently skips
+ * most errors instead of reporting them.
+ */
+GedStructure *parseGEDCOMForgivingly(char *input, const char **errmsg, size_t *errline);
+#endif
