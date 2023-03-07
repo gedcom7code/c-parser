@@ -67,7 +67,10 @@ int main(int argc, const char *argv[]) {
         GedStructure *s = parseGEDCOM(text, dialect, &errmsg, &errline);
         fclose(f);
         if (errmsg) fprintf(stderr, "ERROR(%s %zd): %s\n", argv[i], errline, errmsg);
-        else dumpStructure(s, 0);
+        else { 
+            printf("﻿"); // BOM
+            dumpStructure(s, 0);
+        }
         freeGedStructure(s);
         free(text);
     }
