@@ -50,17 +50,12 @@ void freeGedStructure(GedStructure *g);
  * - returns NULL and allocates nothing
  * - if errmsg is not NULL, sets *errmsg to a string describing the error type
  * - if errline is not NULL, sets *errline to the line number of the error
- */
-GedStructure *parseGEDCOM(char *input, const char **errmsg, size_t *errline);
-
-#ifdef FORGIVING
-/**
- * like parseGEDCOM, by tries to guess what was meant when given malformed data
- * instead of halting with an error. This may result in it returning data with
- * illegal characters in tags and IDs and in skipping non-GEDCOM lines.
  * 
- * This function is much less well tested than parseGEDCOM and silently skips
- * most errors instead of reporting them.
+ * dialect should be an integer
+ * 
+ * - 1 or less will do the most forgiving parse possible
+ * - 2-5 will allow CONC, multi-space delimiters, blank lines, indentation, v5.5 tag andxref characters
+ * - 7 will enforce v7 syntactic rules
  */
-GedStructure *parseGEDCOMForgivingly(char *input, const char **errmsg, size_t *errline);
-#endif
+GedStructure *parseGEDCOM(char *input, int dialect, const char **errmsg, size_t *errline);
+

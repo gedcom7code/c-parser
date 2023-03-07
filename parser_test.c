@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+static int dialect = 7;
+
 void dumpStructure(GedStructure *s, int level) {
     if (!s) return;
     printf("%d", level);
@@ -15,7 +17,7 @@ void dumpStructure(GedStructure *s, int level) {
     if (s->payloadType == GEDC_PAYLOAD_STRING) {
         char *p = strchr(s->string, '\n');
         if (p) *p = '\0';
-        if (s->string[0] == '@') printf(" @%s", s->string);
+        if (s->string[0] == '@' && (dialect >= 7 || s->string[1] != '#')) printf(" @%s", s->string);
         else printf(" %s", s->string);
         while (p) {
             *p = '\n';
@@ -38,10 +40,17 @@ void dumpStructure(GedStructure *s, int level) {
 int main(int argc, const char *argv[]) {
     if (argc <= 1) {
         printf("USAGE: %s filename.ged\n", argv[0]);
+        printf("USAGE: %s -[L] filename.ged\n    where [L] is a 1-digit integer (usually 1, 5, or 7)", argv[0]);
         return 1;
     }
     
-    for(int i=1; i<argc; i+=1) {
+    int i = 1;
+    if (argv[i][0] == '-' && '0' <= argv[i][1] && argv[i][1] <= '9' && !argv[i][2]) {
+        dialect = argv[i][1] - '0';
+        i += 1;
+    }
+    
+    for(; i<argc; i+=1) {
         FILE *f = fopen(argv[i], "r");
         if (!f) {
             perror(argv[i]);
@@ -55,7 +64,7 @@ int main(int argc, const char *argv[]) {
         text[size] = '\0';
         
         const char *errmsg = 0; size_t errline;
-        GedStructure *s = parseGEDCOM(text, &errmsg, &errline);
+        GedStructure *s = parseGEDCOM(text, dialect, &errmsg, &errline);
         fclose(f);
         if (errmsg) fprintf(stderr, "ERROR(%s %zd): %s\n", argv[i], errline, errmsg);
         else dumpStructure(s, 0);
