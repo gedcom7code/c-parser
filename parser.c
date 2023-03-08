@@ -122,6 +122,8 @@ static int unCONTCONC(GedStructure *p, size_t *line) {
                     p->string = p->firstChild->tag;
                     p->string[0] = '\n';
                     p->string[1] = '\0';
+                } else {
+                    p->payloadType = GEDC_PAYLOAD_NONE;
                 }
             } else {
                 p->string = p->firstChild->string - isCONT;
