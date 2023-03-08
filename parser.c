@@ -68,8 +68,8 @@ static int unCONT(GedStructure *p, size_t *line) {
     while (p->firstChild && !strcmp(p->firstChild->tag, "CONT")) {
         *line += 1;
         if (p->payloadType == GEDC_PAYLOAD_POINTER
-        || p->id
-        || p->payloadType == GEDC_PAYLOAD_POINTER
+        || p->firstChild->id
+        || p->firstChild->payloadType == GEDC_PAYLOAD_POINTER
         || p->firstChild->firstChild) return 0;
         if (p->payloadType == GEDC_PAYLOAD_NONE) {
             p->payloadType = GEDC_PAYLOAD_STRING;
@@ -112,8 +112,8 @@ static int unCONTCONC(GedStructure *p, size_t *line) {
         int isCONT = !strcmp(p->firstChild->tag, "CONT");
         *line += 1;
         if (p->payloadType == GEDC_PAYLOAD_POINTER
-        || p->id
-        || p->payloadType == GEDC_PAYLOAD_POINTER
+        || p->firstChild->id
+        || p->firstChild->payloadType == GEDC_PAYLOAD_POINTER
         || p->firstChild->firstChild) return 0;
         if (p->payloadType == GEDC_PAYLOAD_NONE) {
             p->payloadType = GEDC_PAYLOAD_STRING;
